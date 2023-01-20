@@ -193,7 +193,21 @@ func ToRaw(vmesses []VmessStruct) string {
 		}
 
 		var vmessJson json.RawMessage
-		vmessJsonByte := []byte(fmt.Sprintf(`{"add": "%s","aid": %d,"host": "%s","id": "%s","net": "%s","path": "%s","port": %d,"ps": "%s","tls": "%s","security": "%s","skip-cert-verify": %t,"sni": "%s"}`, vmess.ADDRESS, vmess.ALTER_ID, vmess.HOST, vmess.PASSWORD, vmess.NETWORK, vmess.PATH, vmess.PORT, vmess.REMARK, tls, vmess.SECURITY, vmess.SKIP_CERT_VERIFY, vmess.SNI))
+		vmessJsonByte := []byte(fmt.Sprintf(`
+		{
+			"add": "%s",
+			"aid": %d,
+			"host": "%s",
+			"id": "%s",
+			"net": "%s",
+			"path": "%s",
+			"port": %d,
+			"ps": "%s",
+			"tls": "%s",
+			"security": "%s",
+			"skip-cert-verify": %t,
+			"sni": "%s"
+		}`, vmess.ADDRESS, vmess.ALTER_ID, vmess.HOST, vmess.PASSWORD, vmess.NETWORK, vmess.PATH, vmess.PORT, vmess.REMARK, tls, vmess.SECURITY, vmess.SKIP_CERT_VERIFY, vmess.SNI))
 
 		err := json.Unmarshal(vmessJsonByte, &vmessJson)
 		if err != nil {

@@ -116,6 +116,7 @@ func ToClash(Ssres []SsrStruct) string {
 		result = append(result, fmt.Sprintf("    type: %s", Ssr.VPN))
 		result = append(result, fmt.Sprintf("    port: %d", Ssr.PORT))
 		result = append(result, fmt.Sprintf("    cipher: %s", Ssr.METHOD))
+		result = append(result, fmt.Sprintf("    password: %s", Ssr.PASSWORD))
 		result = append(result, fmt.Sprintf("    obfs: %s", Ssr.OBFS))
 		result = append(result, fmt.Sprintf("    obfs-param: %s", Ssr.OBFS_PARAM))
 		result = append(result, fmt.Sprintf("    protocol: %s", Ssr.PROTOCOL))
