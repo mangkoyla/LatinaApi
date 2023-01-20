@@ -16,6 +16,9 @@ var (
 
 func Start() {
 	Router.SetTrustedProxies(nil)
+
+	Router.StaticFile("/favicon.ico", "resources/favicon.ico")
+
 	Router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"status":  "OK",
