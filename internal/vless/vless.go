@@ -158,6 +158,56 @@ func ToClash(vlesses []VlessStruct) string {
 	return strings.Join(result[:], "\n")
 }
 
+func ToSingBox(vlesses []VlessStruct) string {
+	var result []string
+
+	for _, vless := range vlesses {
+		var transportObject, tlsObject string
+		tlsObject = fmt.Sprintf(`
+		{
+			"enabled": %t,
+			"disable_sni": false,
+			"server_name": "%s",
+			"insecure": %t
+		}`, vless.TLS, vless.SNI, vless.SKIP_CERT_VERIFY)
+
+		if vless.NETWORK == "ws" {
+			transportObject = fmt.Sprintf(`
+			{
+				"type": "ws",
+				"path": "%s",
+				"headers": {
+					"Host": "%s"
+				}
+			}`, vless.PATH, vless.HOST)
+		} else if vless.NETWORK == "grpc" {
+			transportObject = fmt.Sprintf(`
+			{
+				"type": "grpc",
+				"service_name": "%s"
+			}`, vless.PATH)
+		} else {
+			transportObject = `{}`
+		}
+
+		result = append(result, fmt.Sprintf(`
+		{
+			"type": "vless",
+			"tag": "%s",
+			"server": "%s",
+			"server_port": %d,
+			"uuid": "%s",
+			"tls": %s,
+			"transport": %s
+		}`, vless.REMARK, vless.ADDRESS, vless.PORT, vless.PASSWORD, tlsObject, transportObject))
+	}
+
+	return fmt.Sprintf(`
+		{
+			"outbounds": [%s]
+		}`, strings.Join(result[:], ","))
+}
+
 func ToRaw(vlesses []VlessStruct) string {
 	var result []string
 

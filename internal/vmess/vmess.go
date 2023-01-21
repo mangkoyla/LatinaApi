@@ -183,6 +183,58 @@ func ToSurfboard(vmesses []VmessStruct) string {
 	return result
 }
 
+func ToSingBox(vmesses []VmessStruct) string {
+	var result []string
+
+	for _, vmess := range vmesses {
+		var transportObject, tlsObject string
+		tlsObject = fmt.Sprintf(`
+		{
+			"enabled": %t,
+			"disable_sni": false,
+			"server_name": "%s",
+			"insecure": %t
+		}`, vmess.TLS, vmess.SNI, vmess.SKIP_CERT_VERIFY)
+
+		if vmess.NETWORK == "ws" {
+			transportObject = fmt.Sprintf(`
+			{
+				"type": "ws",
+				"path": "%s",
+				"headers": {
+					"Host": "%s"
+				}
+			}`, vmess.PATH, vmess.HOST)
+		} else if vmess.NETWORK == "grpc" {
+			transportObject = fmt.Sprintf(`
+			{
+				"type": "grpc",
+				"service_name": "%s"
+			}`, vmess.PATH)
+		} else {
+			transportObject = `{}`
+		}
+
+		result = append(result, fmt.Sprintf(`
+		{
+			"type": "vmess",
+			"tag": "%s",
+			"server": "%s",
+			"server_port": %d,
+			"uuid": "%s",
+			"security": "auto",
+			"alter_id": %d,
+			"tls": %s,
+			"transport": %s
+		}`, vmess.REMARK, vmess.ADDRESS, vmess.PORT, vmess.PASSWORD, vmess.ALTER_ID, tlsObject, transportObject))
+	}
+
+	return fmt.Sprintf(`
+		{
+			"outbounds": [%s]
+		}`, strings.Join(result[:], ","))
+}
+
 func ToRaw(vmesses []VmessStruct) string {
 	var result []string
 

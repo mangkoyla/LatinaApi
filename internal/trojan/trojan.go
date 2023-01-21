@@ -201,6 +201,56 @@ func ToSurfboard(trojans []TrojanStruct) string {
 	return result
 }
 
+func ToSingBox(trojans []TrojanStruct) string {
+	var result []string
+
+	for _, trojan := range trojans {
+		var transportObject, tlsObject string
+		tlsObject = fmt.Sprintf(`
+		{
+			"enabled": %t,
+			"disable_sni": false,
+			"server_name": "%s",
+			"insecure": %t
+		}`, trojan.TLS, trojan.SNI, trojan.SKIP_CERT_VERIFY)
+
+		if trojan.NETWORK == "ws" {
+			transportObject = fmt.Sprintf(`
+			{
+				"type": "ws",
+				"path": "%s",
+				"headers": {
+					"Host": "%s"
+				}
+			}`, trojan.PATH, trojan.HOST)
+		} else if trojan.NETWORK == "grpc" {
+			transportObject = fmt.Sprintf(`
+			{
+				"type": "grpc",
+				"service_name": "%s"
+			}`, trojan.SERVICE_NAME)
+		} else {
+			transportObject = `{}`
+		}
+
+		result = append(result, fmt.Sprintf(`
+		{
+			"type": "trojan",
+			"tag": "%s",
+			"server": "%s",
+			"server_port": %d,
+			"password": "%s",
+			"tls": %s,
+			"transport": %s
+		}`, trojan.REMARK, trojan.ADDRESS, trojan.PORT, trojan.PASSWORD, tlsObject, transportObject))
+	}
+
+	return fmt.Sprintf(`
+		{
+			"outbounds": [%s]
+		}`, strings.Join(result[:], ","))
+}
+
 func ToRaw(trojans []TrojanStruct) string {
 	var result []string
 

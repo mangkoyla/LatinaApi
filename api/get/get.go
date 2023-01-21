@@ -71,6 +71,10 @@ func GetHandler(c *gin.Context) {
 			result := vmess.ToSurfboard(vmesses)
 			result = strings.Replace(result, "URL_PLACEHOLDER", apiHelper.GetRequestedURL(c), 1)
 			c.String(http.StatusOK, result)
+		} else if format == "singbox" {
+			var result json.RawMessage
+			json.Unmarshal([]byte(vmess.ToSingBox(vmesses)), &result)
+			c.JSON(http.StatusOK, result)
 		} else if format == "raw" {
 			result := vmess.ToRaw(vmesses)
 			c.String(http.StatusOK, result)
@@ -104,6 +108,10 @@ func GetHandler(c *gin.Context) {
 			result := trojan.ToSurfboard(trojans)
 			result = strings.Replace(result, "URL_PLACEHOLDER", apiHelper.GetRequestedURL(c), 1)
 			c.String(http.StatusOK, result)
+		} else if format == "singbox" {
+			var result json.RawMessage
+			json.Unmarshal([]byte(trojan.ToSingBox(trojans)), &result)
+			c.JSON(http.StatusOK, result)
 		} else if format == "raw" {
 			result := trojan.ToRaw(trojans)
 			c.String(http.StatusOK, result)
@@ -133,6 +141,10 @@ func GetHandler(c *gin.Context) {
 		if format == "clash" {
 			result := ssr.ToClash(ssrs)
 			c.String(http.StatusOK, result)
+		} else if format == "singbox" {
+			var result json.RawMessage
+			json.Unmarshal([]byte(ssr.ToSingBox(ssrs)), &result)
+			c.JSON(http.StatusOK, result)
 		} else if format == "raw" {
 			result := ssr.ToRaw(ssrs)
 			c.String(http.StatusOK, result)
@@ -162,6 +174,10 @@ func GetHandler(c *gin.Context) {
 		if format == "clash" {
 			result := vless.ToClash(vlesses)
 			c.String(http.StatusOK, result)
+		} else if format == "singbox" {
+			var result json.RawMessage
+			json.Unmarshal([]byte(vless.ToSingBox(vlesses)), &result)
+			c.JSON(http.StatusOK, result)
 		} else if format == "raw" {
 			result := vless.ToRaw(vlesses)
 			c.String(http.StatusOK, result)

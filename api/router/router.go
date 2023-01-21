@@ -27,7 +27,7 @@ func Start() {
 				"cc":     "Country Code. ex: SG, ID, JP (select one)",
 				"region": "Regional. ex: Asia, Americas, Europe, Africa (select one)",
 				"vpn":    "Vpn Type, ex: trojan, vmess, vless (select one)",
-				"format": "Target format, ex: clash, surfboard, raw (select one)",
+				"format": "Target format, ex: clash, surfboard, singbox, raw (select one)",
 				"cdn":    "CDN bugs, separate with (,) for multiple bugs",
 				"sni":    "SNI bugs, separate with (,) for multiple bugs",
 			},

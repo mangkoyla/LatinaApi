@@ -127,6 +127,31 @@ func ToClash(Ssres []SsrStruct) string {
 	return strings.Join(result[:], "\n")
 }
 
+func ToSingBox(ssrs []SsrStruct) string {
+	var result []string
+
+	for _, ssr := range ssrs {
+		result = append(result, fmt.Sprintf(`
+		{
+			"type": "shadowsocksr",
+			"tag": "%s",
+			"server": "%s",
+			"server_port": %d,
+			"method": "%s",
+			"password": "%s",
+			"obfs": "%s",
+			"obfs_param": "%s",
+			"protocol": "%s",
+			"protocol_param": "%s"
+		}`, ssr.REMARK, ssr.ADDRESS, ssr.PORT, ssr.METHOD, ssr.PASSWORD, ssr.OBFS, ssr.OBFS_PARAM, ssr.PROTOCOL, ssr.PROTOCOL_PARAM))
+	}
+
+	return fmt.Sprintf(`
+		{
+			"outbounds": [%s]
+		}`, strings.Join(result[:], ","))
+}
+
 func ToRaw(Ssres []SsrStruct) string {
 	var result []string
 
