@@ -19,153 +19,101 @@ func GetHandler(c *gin.Context) {
 	dl := c.Query("dl")
 	format := c.DefaultQuery("format", "clash")
 	vpn := c.DefaultQuery("vpn", "vmess")
-	cc := c.DefaultQuery("cc", "all")
-	region := c.DefaultQuery("region", "all")
 	cdn := strings.Split(c.DefaultQuery("cdn", ""), ",")
 	sni := strings.Split(c.DefaultQuery("sni", ""), ",")
 
 	var (
-		proxies             json.RawMessage
-		err                 error
-		disposition, filter string
+		proxies, resultJson         json.RawMessage
+		err                         error
+		disposition, filter, result string
+
+		vmesses []vmess.VmessStruct
+		vlesses []vless.VlessStruct
+		trojans []trojan.TrojanStruct
+		ssrs    []ssr.SsrStruct
 	)
 
 	// Build headers and filters
+	disposition = fmt.Sprintf("filename=fool_%s.txt", format)
 	filter = helper.BuildFilter(c)
 
-	if cc != "all" {
-		disposition = "filename=" + strings.ToUpper(fmt.Sprintf("%s_%s_%s", format, cc, vpn))
-	} else if region != "all" {
-		disposition = "filename=" + strings.ToUpper(fmt.Sprintf("%s_%s_%s", format, region, vpn))
-	} else {
-		disposition = "filename=" + strings.ToUpper(fmt.Sprintf("%s_all_%s", format, vpn))
-	}
-
-	if dl != "" {
+	if dl == "1" {
 		disposition = "attachment; " + disposition
 	}
 
 	// Set headers and filters
 	c.Header("Content-Disposition", disposition)
 
-	if vpn == "vmess" {
-		proxies, err = json.Marshal(vmess.Get(filter))
+	// Prepare for multi protocol support
+	vpns := strings.Split(vpn, ",")
+	for _, vpnType := range vpns {
+		switch vpnType {
+		case "vmess":
+			proxies, err = json.Marshal(vmess.Get(filter))
+			json.Unmarshal(proxies, &vmesses)
+			vmesses = vmess.FillBugs(vmesses, cdn, sni)
 
-		if err != nil {
-			c.String(http.StatusInternalServerError, err.Error())
-			return
+			if format == "clash" {
+				result = vmess.ToClash(vmesses)
+			} else if format == "surfboard" {
+				result = vmess.ToSurfboard(vmesses)
+				result = strings.Replace(result, "URL_PLACEHOLDER", apiHelper.GetRequestedURL(c), 1)
+			} else if format == "singbox" {
+				json.Unmarshal([]byte(vmess.ToSingBox(vmesses)), &resultJson)
+			} else {
+				result = vmess.ToRaw(vmesses)
+			}
+		case "vless":
+			proxies, err = json.Marshal(vless.Get(filter))
+			json.Unmarshal(proxies, &vlesses)
+			vlesses = vless.FillBugs(vlesses, cdn, sni)
+
+			if format == "clash" {
+				result = vless.ToClash(vlesses)
+			} else if format == "singbox" {
+				json.Unmarshal([]byte(vless.ToSingBox(vlesses)), &resultJson)
+			} else {
+				result = vless.ToRaw(vlesses)
+			}
+		case "trojan":
+			proxies, err = json.Marshal(trojan.Get(filter))
+			json.Unmarshal(proxies, &trojans)
+			trojans = trojan.FillBugs(trojans, cdn, sni)
+
+			if format == "clash" {
+				result = trojan.ToClash(trojans)
+			} else if format == "surfboard" {
+				result = trojan.ToSurfboard(trojans)
+				result = strings.Replace(result, "URL_PLACEHOLDER", apiHelper.GetRequestedURL(c), 1)
+			} else if format == "singbox" {
+				json.Unmarshal([]byte(trojan.ToSingBox(trojans)), &resultJson)
+			} else {
+				result = trojan.ToRaw(trojans)
+			}
+		case "ssr":
+			proxies, err = json.Marshal(ssr.Get(filter))
+			json.Unmarshal(proxies, &ssrs)
+			ssrs = ssr.FillBugs(ssrs, sni)
+
+			if format == "clash" {
+				result = ssr.ToClash(ssrs)
+			} else if format == "singbox" {
+				json.Unmarshal([]byte(ssr.ToSingBox(ssrs)), &resultJson)
+			} else {
+				result = ssr.ToRaw(ssrs)
+			}
 		}
+	}
 
-		var vmesses []vmess.VmessStruct
-		json.Unmarshal(proxies, &vmesses)
-
-		vmesses = vmess.FillBugs(vmesses, cdn, sni)
-		if format == "clash" {
-			result := vmess.ToClash(vmesses)
-			c.String(http.StatusOK, result)
-		} else if format == "surfboard" {
-			result := vmess.ToSurfboard(vmesses)
-			result = strings.Replace(result, "URL_PLACEHOLDER", apiHelper.GetRequestedURL(c), 1)
-			c.String(http.StatusOK, result)
-		} else if format == "singbox" {
-			var result json.RawMessage
-			json.Unmarshal([]byte(vmess.ToSingBox(vmesses)), &result)
-			c.JSON(http.StatusOK, result)
-		} else if format == "raw" {
-			result := vmess.ToRaw(vmesses)
-			c.String(http.StatusOK, result)
-		} else {
-			c.AbortWithStatus(http.StatusBadRequest)
-		}
-
-		return
-	} else if vpn == "trojan" {
-		proxies, err = json.Marshal(trojan.Get(filter))
-
-		if err != nil {
-			c.String(http.StatusInternalServerError, err.Error())
-			return
-		}
-
-		var trojans []trojan.TrojanStruct
-		json.Unmarshal(proxies, &trojans)
-
-		trojans = trojan.FillBugs(trojans, cdn, sni)
-		if format == "clash" {
-			result := trojan.ToClash(trojans)
-			c.String(http.StatusOK, result)
-		} else if format == "surfboard" {
-			result := trojan.ToSurfboard(trojans)
-			result = strings.Replace(result, "URL_PLACEHOLDER", apiHelper.GetRequestedURL(c), 1)
-			c.String(http.StatusOK, result)
-		} else if format == "singbox" {
-			var result json.RawMessage
-			json.Unmarshal([]byte(trojan.ToSingBox(trojans)), &result)
-			c.JSON(http.StatusOK, result)
-		} else if format == "raw" {
-			result := trojan.ToRaw(trojans)
-			c.String(http.StatusOK, result)
-		} else {
-			c.AbortWithStatus(http.StatusBadRequest)
-		}
-
-		return
-	} else if vpn == "ssr" {
-		proxies, err = json.Marshal(ssr.Get(filter))
-
-		if err != nil {
-			c.String(http.StatusInternalServerError, err.Error())
-			return
-		}
-
-		var ssrs []ssr.SsrStruct
-		json.Unmarshal(proxies, &ssrs)
-
-		ssrs = ssr.FillBugs(ssrs, sni)
-		if format == "clash" {
-			result := ssr.ToClash(ssrs)
-			c.String(http.StatusOK, result)
-		} else if format == "singbox" {
-			var result json.RawMessage
-			json.Unmarshal([]byte(ssr.ToSingBox(ssrs)), &result)
-			c.JSON(http.StatusOK, result)
-		} else if format == "raw" {
-			result := ssr.ToRaw(ssrs)
-			c.String(http.StatusOK, result)
-		} else {
-			c.AbortWithStatus(http.StatusBadRequest)
-		}
-
-		return
-	} else if vpn == "vless" {
-		proxies, err = json.Marshal(vless.Get(filter))
-
-		if err != nil {
-			c.String(http.StatusInternalServerError, err.Error())
-			return
-		}
-
-		var vlesses []vless.VlessStruct
-		json.Unmarshal(proxies, &vlesses)
-
-		vlesses = vless.FillBugs(vlesses, cdn, sni)
-		if format == "clash" {
-			result := vless.ToClash(vlesses)
-			c.String(http.StatusOK, result)
-		} else if format == "singbox" {
-			var result json.RawMessage
-			json.Unmarshal([]byte(vless.ToSingBox(vlesses)), &result)
-			c.JSON(http.StatusOK, result)
-		} else if format == "raw" {
-			result := vless.ToRaw(vlesses)
-			c.String(http.StatusOK, result)
-		} else {
-			c.AbortWithStatus(http.StatusBadRequest)
-		}
-
+	if err != nil {
+		c.String(http.StatusInternalServerError, err.Error())
 		return
 	} else {
-		c.AbortWithStatus(http.StatusBadRequest)
+		if format == "singbox" {
+			c.JSON(http.StatusOK, resultJson)
+		} else {
+			c.String(http.StatusOK, result)
+		}
 		return
 	}
 }

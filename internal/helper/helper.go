@@ -32,13 +32,34 @@ func BuildFilter(c *gin.Context) string {
 	for key, value := range c.Request.URL.Query() {
 		switch key {
 		case "remark":
-			filter = append(filter, fmt.Sprintf(`%s LIKE "%%%s%%"`, strings.ToUpper(key), value[0]))
+			var remarkFilter []string
+			remarks := strings.Split(value[0], ",")
+
+			for _, remark := range remarks {
+				remarkFilter = append(remarkFilter, fmt.Sprintf(`%s LIKE "%%%s%%"`, strings.ToUpper(key), remark))
+			}
+
+			filter = append(filter, fmt.Sprintf("(%s)", strings.Join(remarkFilter[:], " OR ")))
 		case "region":
-			filter = append(filter, fmt.Sprintf(`%s="%s"`, strings.ToUpper(key), value[0]))
+			var regionFilter []string
+			regions := strings.Split(value[0], ",")
+
+			for _, region := range regions {
+				regionFilter = append(regionFilter, fmt.Sprintf(`%s="%s"`, strings.ToUpper(key), region))
+			}
+
+			filter = append(filter, fmt.Sprintf("(%s)", strings.Join(regionFilter[:], " OR ")))
 		case "cc":
-			filter = append(filter, fmt.Sprintf(`%s="%s"`, strings.ToUpper(key), value[0]))
+			var ccFilter []string
+			ccs := strings.Split(value[0], ",")
+
+			for _, cc := range ccs {
+				ccFilter = append(ccFilter, fmt.Sprintf(`%s="%s"`, strings.ToUpper(key), cc))
+			}
+
+			filter = append(filter, fmt.Sprintf("(%s)", strings.Join(ccFilter[:], " OR ")))
 		case "tls":
-			if value[0] != "" {
+			if value[0] == "1" {
 				tls = 1
 			} else {
 				tls = 0
