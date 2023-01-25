@@ -1,5 +1,12 @@
 package helper
 
+import (
+	"fmt"
+	"strings"
+
+	"github.com/gin-gonic/gin"
+)
+
 func CalculateMode(isCdn, isSni string) (int, int) {
 	if isCdn != "" && isSni != "" {
 		return 1, 0
@@ -9,5 +16,63 @@ func CalculateMode(isCdn, isSni string) (int, int) {
 		return 0, 0
 	} else {
 		return 0, 1
+	}
+}
+
+func BuildFilter(c *gin.Context) string {
+	vpn := c.Query("vpn")
+	isCdn, isSni := CalculateMode(c.Query("cdn"), c.Query("sni"))
+
+	var (
+		filter []string
+		result string
+		tls    int
+	)
+
+	for key, value := range c.Request.URL.Query() {
+		switch key {
+		case "remark":
+			filter = append(filter, fmt.Sprintf(`%s LIKE "%%%s%%"`, strings.ToUpper(key), value[0]))
+		case "region":
+			filter = append(filter, fmt.Sprintf(`%s="%s"`, strings.ToUpper(key), value[0]))
+		case "cc":
+			filter = append(filter, fmt.Sprintf(`%s="%s"`, strings.ToUpper(key), value[0]))
+		case "tls":
+			if value[0] != "" {
+				tls = 1
+			} else {
+				tls = 0
+			}
+
+			if vpn == "vmess" {
+				filter = append(filter, fmt.Sprintf(`%s=%d`, strings.ToUpper(key), tls))
+			}
+		case "network":
+			if vpn == "vmess" {
+				filter = append(filter, fmt.Sprintf(`%s="%s"`, strings.ToUpper(key), value[0]))
+			} else if vpn == "trojan" {
+				filter = append(filter, fmt.Sprintf(`TYPE="%s"`, value[0]))
+			} else if vpn == "vless" {
+				filter = append(filter, fmt.Sprintf(`TYPE="%s"`, value[0]))
+			} else if vpn == "ssr" {
+				filter = append(filter, fmt.Sprintf(`OBFS LIKE "%%%s%%"`, value[0]))
+			}
+		}
+	}
+
+	result = strings.Join(filter[:], " AND ")
+
+	if vpn != "ssr" {
+		if result != "" {
+			result = result + fmt.Sprintf(" AND (IS_CDN=%d OR IS_CDN=%d)", isCdn, isSni)
+		} else {
+			result = fmt.Sprintf("(IS_CDN=%d OR IS_CDN=%d)", isCdn, isSni)
+		}
+	}
+
+	if result != "" {
+		return "WHERE " + result
+	} else {
+		return result
 	}
 }

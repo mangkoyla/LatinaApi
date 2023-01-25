@@ -23,13 +23,15 @@ func GetHandler(c *gin.Context) {
 	region := c.DefaultQuery("region", "all")
 	cdn := strings.Split(c.DefaultQuery("cdn", ""), ",")
 	sni := strings.Split(c.DefaultQuery("sni", ""), ",")
-	isCdn, isSni := helper.CalculateMode(c.Query("cdn"), c.Query("sni"))
 
 	var (
-		proxies     json.RawMessage
-		err         error
-		disposition string
+		proxies             json.RawMessage
+		err                 error
+		disposition, filter string
 	)
+
+	// Build headers and filters
+	filter = helper.BuildFilter(c)
 
 	if cc != "all" {
 		disposition = "filename=" + strings.ToUpper(fmt.Sprintf("%s_%s_%s", format, cc, vpn))
@@ -43,17 +45,11 @@ func GetHandler(c *gin.Context) {
 		disposition = "attachment; " + disposition
 	}
 
-	// Set headers
+	// Set headers and filters
 	c.Header("Content-Disposition", disposition)
 
 	if vpn == "vmess" {
-		if cc != "all" {
-			proxies, err = json.Marshal(vmess.GetByCC(cc, isCdn, isSni))
-		} else if region != "all" {
-			proxies, err = json.Marshal(vmess.GetByRegion(region, isCdn, isSni))
-		} else {
-			proxies, err = json.Marshal(vmess.GetAll(isCdn, isSni))
-		}
+		proxies, err = json.Marshal(vmess.Get(filter))
 
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
@@ -84,13 +80,7 @@ func GetHandler(c *gin.Context) {
 
 		return
 	} else if vpn == "trojan" {
-		if cc != "all" {
-			proxies, err = json.Marshal(trojan.GetByCC(cc, isCdn, isSni))
-		} else if region != "all" {
-			proxies, err = json.Marshal(trojan.GetByRegion(region, isCdn, isSni))
-		} else {
-			proxies, err = json.Marshal(trojan.GetAll(isCdn, isSni))
-		}
+		proxies, err = json.Marshal(trojan.Get(filter))
 
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
@@ -121,13 +111,7 @@ func GetHandler(c *gin.Context) {
 
 		return
 	} else if vpn == "ssr" {
-		if cc != "all" {
-			proxies, err = json.Marshal(ssr.GetByCC(cc))
-		} else if region != "all" {
-			proxies, err = json.Marshal(ssr.GetByRegion(region))
-		} else {
-			proxies, err = json.Marshal(ssr.GetAll())
-		}
+		proxies, err = json.Marshal(ssr.Get(filter))
 
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
@@ -154,13 +138,7 @@ func GetHandler(c *gin.Context) {
 
 		return
 	} else if vpn == "vless" {
-		if cc != "all" {
-			proxies, err = json.Marshal(vless.GetByCC(cc, isCdn, isSni))
-		} else if region != "all" {
-			proxies, err = json.Marshal(vless.GetByRegion(region, isCdn, isSni))
-		} else {
-			proxies, err = json.Marshal(vless.GetAll(isCdn, isSni))
-		}
+		proxies, err = json.Marshal(vless.Get(filter))
 
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())

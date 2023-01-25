@@ -12,7 +12,7 @@ import (
 	"github.com/LalatinaHub/LatinaApi/internal/db"
 )
 
-func GetAll(isCdn, isSni int) []VmessStruct {
+func Get(filter string) []VmessStruct {
 	conn := db.Database.Connect()
 
 	query := fmt.Sprintf(`SELECT 
@@ -31,61 +31,7 @@ func GetAll(isCdn, isSni int) []VmessStruct {
 		IS_CDN,
 		CC,
 		REGION,
-		VPN FROM Vmess WHERE IS_CDN=%d OR IS_CDN=%d;`, isCdn, isSni)
-	rows, _ := conn.Query(query)
-	defer rows.Close()
-	db.Database.Close(conn)
-
-	return toJson(rows)
-}
-
-func GetByCC(cc string, isCdn, isSni int) []VmessStruct {
-	conn := db.Database.Connect()
-
-	query := fmt.Sprintf(`SELECT 
-		ADDRESS,
-		ALTER_ID,
-		PORT,
-		PASSWORD,
-		SECURITY,
-		HOST,
-		TLS,
-		NETWORK,
-		PATH,
-		SKIP_CERT_VERIFY,
-		SNI,
-		REMARK,
-		IS_CDN,
-		CC,
-		REGION,
-		VPN FROM Vmess WHERE CC='%s' AND (IS_CDN=%d OR IS_CDN=%d);`, cc, isCdn, isSni)
-	rows, _ := conn.Query(query)
-	defer rows.Close()
-	db.Database.Close(conn)
-
-	return toJson(rows)
-}
-
-func GetByRegion(region string, isCdn, isSni int) []VmessStruct {
-	conn := db.Database.Connect()
-
-	query := fmt.Sprintf(`SELECT 
-		ADDRESS,
-		ALTER_ID,
-		PORT,
-		PASSWORD,
-		SECURITY,
-		HOST,
-		TLS,
-		NETWORK,
-		PATH,
-		SKIP_CERT_VERIFY,
-		SNI,
-		REMARK,
-		IS_CDN,
-		CC,
-		REGION,
-		VPN FROM Vmess WHERE REGION='%s' AND (IS_CDN=%d OR IS_CDN=%d);`, region, isCdn, isSni)
+		VPN FROM Vmess %s;`, filter)
 	rows, _ := conn.Query(query)
 	defer rows.Close()
 	db.Database.Close(conn)

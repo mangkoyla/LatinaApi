@@ -11,7 +11,7 @@ import (
 	"github.com/LalatinaHub/LatinaApi/internal/db"
 )
 
-func GetAll(isCdn, isSni int) []TrojanStruct {
+func Get(filter string) []TrojanStruct {
 	conn := db.Database.Connect()
 
 	query := fmt.Sprintf(`SELECT 
@@ -34,69 +34,7 @@ func GetAll(isCdn, isSni int) []TrojanStruct {
 		IS_CDN,
 		CC,
 		REGION,
-		VPN FROM Trojan WHERE IS_CDN=%d OR IS_CDN=%d;`, isCdn, isSni)
-	rows, _ := conn.Query(query)
-	defer rows.Close()
-	db.Database.Close(conn)
-
-	return toJson(rows)
-}
-
-func GetByCC(cc string, isCdn, isSni int) []TrojanStruct {
-	conn := db.Database.Connect()
-
-	query := fmt.Sprintf(`SELECT 
-		ADDRESS,
-		PORT,
-		PASSWORD,
-		SECURITY,
-		HOST,
-		TYPE,
-		PATH,
-		SERVICE_NAME,
-		MODE,
-		ALLOW_INSECURE,
-		SNI,
-		REMARK,
-		FLOW,
-		LEVEL,
-		METHOD,
-		OTA,
-		IS_CDN,
-		CC,
-		REGION,
-		VPN FROM Trojan WHERE CC='%s' AND (IS_CDN=%d OR IS_CDN=%d);`, cc, isCdn, isSni)
-	rows, _ := conn.Query(query)
-	defer rows.Close()
-	db.Database.Close(conn)
-
-	return toJson(rows)
-}
-
-func GetByRegion(region string, isCdn, isSni int) []TrojanStruct {
-	conn := db.Database.Connect()
-
-	query := fmt.Sprintf(`SELECT 
-		ADDRESS,
-		PORT,
-		PASSWORD,
-		SECURITY,
-		HOST,
-		TYPE,
-		PATH,
-		SERVICE_NAME,
-		MODE,
-		ALLOW_INSECURE,
-		SNI,
-		REMARK,
-		FLOW,
-		LEVEL,
-		METHOD,
-		OTA,
-		IS_CDN,
-		CC,
-		REGION,
-		VPN FROM Trojan WHERE REGION='%s' AND (IS_CDN=%d OR IS_CDN=%d);`, region, isCdn, isSni)
+		VPN FROM Trojan %s;`, filter)
 	rows, _ := conn.Query(query)
 	defer rows.Close()
 	db.Database.Close(conn)

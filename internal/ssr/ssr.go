@@ -9,31 +9,7 @@ import (
 	"github.com/LalatinaHub/LatinaApi/internal/db"
 )
 
-func GetAll() []SsrStruct {
-	conn := db.Database.Connect()
-
-	query := `SELECT 
-		ADDRESS,
-		PORT,
-		PASSWORD,
-		METHOD,
-		PROTOCOL,
-		PROTOCOL_PARAM,
-		OBFS,
-		OBFS_PARAM,
-		[GROUP],
-		REMARK,
-		CC,
-		REGION,
-		VPN FROM SSR`
-	rows, _ := conn.Query(query)
-	defer rows.Close()
-	db.Database.Close(conn)
-
-	return toJson(rows)
-}
-
-func GetByCC(cc string) []SsrStruct {
+func Get(filter string) []SsrStruct {
 	conn := db.Database.Connect()
 
 	query := fmt.Sprintf(`SELECT 
@@ -49,31 +25,7 @@ func GetByCC(cc string) []SsrStruct {
 		REMARK,
 		CC,
 		REGION,
-		VPN FROM SSR WHERE CC='%s';`, cc)
-	rows, _ := conn.Query(query)
-	defer rows.Close()
-	db.Database.Close(conn)
-
-	return toJson(rows)
-}
-
-func GetByRegion(region string) []SsrStruct {
-	conn := db.Database.Connect()
-
-	query := fmt.Sprintf(`SELECT 
-		ADDRESS,
-		PORT,
-		PASSWORD,
-		METHOD,
-		PROTOCOL,
-		PROTOCOL_PARAM,
-		OBFS,
-		OBFS_PARAM,
-		[GROUP],
-		REMARK,
-		CC,
-		REGION,
-		VPN FROM SSR WHERE REGION='%s';`, region)
+		VPN FROM SSR %s`, filter)
 	rows, _ := conn.Query(query)
 	defer rows.Close()
 	db.Database.Close(conn)
