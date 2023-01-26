@@ -144,6 +144,11 @@ func ToSingBox(trojans []TrojanStruct) string {
 
 	for _, trojan := range trojans {
 		var transportObject, tlsObject string
+
+		if trojan.SECURITY == "tls" {
+			trojan.TLS = true
+		}
+
 		tlsObject = fmt.Sprintf(`
 		{
 			"enabled": %t,

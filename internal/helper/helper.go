@@ -29,17 +29,31 @@ func BuildFilter(c *gin.Context) string {
 		tls    int
 	)
 
+	// Default vpn protocol
+	if vpn == "" {
+		vpn = "vmess"
+	}
+
 	for key, value := range c.Request.URL.Query() {
 		switch key {
-		case "remark":
-			var remarkFilter []string
-			remarks := strings.Split(value[0], ",")
+		case "include":
+			var includeFilter []string
+			includes := strings.Split(value[0], ",")
 
-			for _, remark := range remarks {
-				remarkFilter = append(remarkFilter, fmt.Sprintf(`%s LIKE "%%%s%%"`, strings.ToUpper(key), remark))
+			for _, include := range includes {
+				includeFilter = append(includeFilter, fmt.Sprintf(`REMARK LIKE "%%%s%%"`, include))
 			}
 
-			filter = append(filter, fmt.Sprintf("(%s)", strings.Join(remarkFilter[:], " OR ")))
+			filter = append(filter, fmt.Sprintf("(%s)", strings.Join(includeFilter[:], " OR ")))
+		case "exclude":
+			var excludeFilter []string
+			excludes := strings.Split(value[0], ",")
+
+			for _, exclude := range excludes {
+				excludeFilter = append(excludeFilter, fmt.Sprintf(`REMARK NOT LIKE "%%%s%%"`, exclude))
+			}
+
+			filter = append(filter, fmt.Sprintf("(%s)", strings.Join(excludeFilter[:], " AND ")))
 		case "region":
 			var regionFilter []string
 			regions := strings.Split(value[0], ",")

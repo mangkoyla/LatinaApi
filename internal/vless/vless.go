@@ -74,7 +74,12 @@ func toJson(rows *sql.Rows) []VlessStruct {
 
 func ToClash(vlesses []VlessStruct) string {
 	var result = []string{"proxies:"}
+
 	for _, vless := range vlesses {
+		if vless.SECURITY == "tls" {
+			vless.TLS = true
+		}
+
 		result = append(result, fmt.Sprintf("  - name: %s", vless.REMARK))
 		result = append(result, fmt.Sprintf("    server: %s", vless.ADDRESS))
 		result = append(result, fmt.Sprintf("    type: %s", vless.VPN))
@@ -105,6 +110,11 @@ func ToSingBox(vlesses []VlessStruct) string {
 
 	for _, vless := range vlesses {
 		var transportObject, tlsObject string
+
+		if vless.SECURITY == "tls" {
+			vless.TLS = true
+		}
+
 		tlsObject = fmt.Sprintf(`
 		{
 			"enabled": %t,
