@@ -88,7 +88,7 @@ func ToClash(trojans []TrojanStruct) string {
 		result = append(result, "    udp: true")
 		result = append(result, fmt.Sprintf("    skip-cert-verify: %t", trojan.SKIP_CERT_VERIFY))
 		result = append(result, fmt.Sprintf("    network: %s", trojan.NETWORK))
-		result = append(result, fmt.Sprintf("    servername: %s", trojan.SNI))
+		result = append(result, fmt.Sprintf("    sni: %s", trojan.SNI))
 		if trojan.NETWORK == "ws" {
 			result = append(result, "    ws-opts:")
 			result = append(result, fmt.Sprintf("      path: %s", trojan.PATH))
