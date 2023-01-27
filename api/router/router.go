@@ -2,6 +2,7 @@ package router
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 
 	endpoint "github.com/LalatinaHub/LatinaApi/api/get"
@@ -17,9 +18,17 @@ var (
 func Start() {
 	Router.SetTrustedProxies(nil)
 
-	Router.Use(static.Serve("/", static.LocalFile("public/", false)))
+	Router.NoRoute(func(c *gin.Context) {
+		html, _ := os.ReadFile("public/404.html")
+
+		c.Writer.Header().Set("Content-Type", "text/html")
+		c.String(http.StatusNotFound, string(html))
+		return
+	})
 
 	Router.GET("/get", endpoint.GetHandler)
+
+	Router.Use(static.Serve("/", static.LocalFile("public/", false)))
 
 	if Port == "" {
 		Port = "8080"
