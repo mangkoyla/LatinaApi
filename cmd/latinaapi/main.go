@@ -14,10 +14,8 @@ import (
 func cronJob() {
 	schedule := gocron.NewScheduler(time.UTC)
 
-	schedule.Every(30).Minutes().Do(func() {
-		dl.DownloadResource()
-	})
-
+	dl.DownloadResource()
+	
 	// On test
 	schedule.Every(10).Hours().Do(func() {
 		dl.Scrape()

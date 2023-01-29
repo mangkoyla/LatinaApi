@@ -13,8 +13,9 @@ WORKDIR /usr/src/app
 COPY . .
 COPY --from=web_builder /usr/src/web/docs/.vitepress/dist/ /usr/src/app/public/
 
+RUN apt-get update -y
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x -o ./node_source.sh 
-RUN bash ./node_source.sh && apt-get install -y nodejs
+RUN bash ./node_source.sh && apt-get install nodejs build-essential -y
 RUN git clone https://github.com/LalatinaHub/LatinaSub
 RUN cd LatinaSub && npm install
 RUN mkdir LatinaSub/bin
@@ -29,6 +30,7 @@ RUN go mod download && go mod tidy && go mod verify
 RUN go build -o ./latinaapi ./cmd/latinaapi/main.go
 
 ENV GIN_MODE=release
+ENV API_MODE=true
 EXPOSE 8080
 
 CMD ["./latinaapi"]
