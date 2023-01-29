@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 
 	"github.com/LalatinaHub/LatinaApi/internal/db"
 )
@@ -35,4 +36,14 @@ func DownloadResource() {
 	}
 
 	fmt.Println("done")
+}
+
+// On test
+func Scrape() {
+	fmt.Println("Starting scraper !")
+
+	scrape := exec.Command("npm", "run", "bg")
+
+	scrape.Dir = "LatinaSub"
+	_ = scrape.Run()
 }

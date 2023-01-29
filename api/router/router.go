@@ -5,7 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	endpoint "github.com/LalatinaHub/LatinaApi/api/get"
+	getRoute "github.com/LalatinaHub/LatinaApi/api/get"
+	logRoute "github.com/LalatinaHub/LatinaApi/api/log"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 )
@@ -26,7 +27,8 @@ func Start() {
 		return
 	})
 
-	Router.GET("/get", endpoint.GetHandler)
+	Router.GET("/get", getRoute.GetHandler)
+	Router.GET("/log", logRoute.LogHandler)
 
 	Router.Use(static.Serve("/", static.LocalFile("public/", false)))
 
