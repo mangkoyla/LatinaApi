@@ -14,12 +14,14 @@ import (
 func cronJob() {
 	schedule := gocron.NewScheduler(time.UTC)
 
-	dl.DownloadResource()
-	
-	// On test
-	schedule.Every(10).Hours().Do(func() {
-		dl.Scrape()
+	schedule.Every(30).Minutes().Do(func() {
+		dl.DownloadResource()
 	})
+
+	// On test
+	// schedule.Every(10).Hours().Do(func() {
+	// 	dl.Scrape()
+	// })
 
 	schedule.StartAsync()
 }
