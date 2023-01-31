@@ -2,47 +2,46 @@ package db
 
 import (
 	"database/sql"
+	"io/ioutil"
 	"log"
+	"os"
+	"strconv"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
 var (
-	DbPath string = "resources/db.sqlite"
+	DbName string = ""
+	DbPath string = "resources/databases/"
 	DbUrl  string = "https://github.com/LalatinaHub/LatinaSub/raw/main/result/db.sqlite"
 )
 
-type DB struct {
-	connPool []sql.DB
-}
+func selectDb() string {
+	var (
+		latestDb int
+	)
 
-func (x *DB) Init() {
-	for i := 0; i < 10; i++ {
-		db, err := sql.Open("sqlite3", DbPath)
-		if err != nil {
-			log.Fatal(err)
+	files, _ := ioutil.ReadDir("resources/databases/")
+	for _, file := range files {
+		info, _ := os.Stat(DbPath + file.Name())
+		modTime := info.ModTime().Format("20060102150405")
+		newDb, _ := strconv.Atoi(modTime)
+
+		if newDb > latestDb {
+			latestDb = newDb
+
+			DbName = info.Name()
 		}
-
-		x.connPool = append(x.connPool, *db)
-	}
-}
-
-func (x *DB) Connect() sql.DB {
-	if len(x.connPool) < 1 {
-		log.Fatal("Too much connection to database!")
 	}
 
-	conn := x.connPool[0]
-	x.connPool = x.connPool[1:]
-	return conn
+	return DbPath + DbName
 }
 
-func (x *DB) Close(conn sql.DB) {
-	x.connPool = append(x.connPool, conn)
-}
+func Connect() sql.DB {
+	db, err := sql.Open("sqlite3", selectDb())
+	if err != nil {
+		log.Fatal(err)
+	}
 
-func (x DB) ConnLeft() int {
-	return len(x.connPool)
+	return *db
 }
-
-var Database DB = DB{}

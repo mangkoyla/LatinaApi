@@ -13,7 +13,7 @@ import (
 )
 
 func Get(filter string) []VmessStruct {
-	conn := db.Database.Connect()
+	conn := db.Connect()
 
 	query := fmt.Sprintf(`SELECT 
 		ADDRESS,
@@ -34,7 +34,7 @@ func Get(filter string) []VmessStruct {
 		VPN FROM Vmess %s;`, filter)
 	rows, _ := conn.Query(query)
 	defer rows.Close()
-	db.Database.Close(conn)
+	conn.Close()
 
 	return toJson(rows)
 }

@@ -12,7 +12,7 @@ import (
 )
 
 func Get(filter string) []TrojanStruct {
-	conn := db.Database.Connect()
+	conn := db.Connect()
 
 	query := fmt.Sprintf(`SELECT 
 		ADDRESS,
@@ -37,7 +37,7 @@ func Get(filter string) []TrojanStruct {
 		VPN FROM Trojan %s;`, filter)
 	rows, _ := conn.Query(query)
 	defer rows.Close()
-	db.Database.Close(conn)
+	conn.Close()
 
 	return toJson(rows)
 }
