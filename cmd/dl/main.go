@@ -1,6 +1,8 @@
 package dl
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -14,6 +16,10 @@ import (
 )
 
 func DownloadResource() {
+	var (
+		md5List []string
+	)
+
 	fmt.Print("Updating Database...")
 
 	dt := time.Now()
@@ -47,12 +53,25 @@ func DownloadResource() {
 	files, _ := ioutil.ReadDir("resources/databases/")
 	for _, file := range files {
 		info, _ := os.Stat(db.DbPath + file.Name())
+		x, _ := os.Open(db.DbPath + file.Name())
+		defer x.Close()
 
-		if dt.Format("15") != info.ModTime().Format("15") {
+		hash := md5.New()
+		_, _ = io.Copy(hash, x)
+		sum := hex.EncodeToString(hash.Sum(nil)[:])
+
+		for _, md5 := range md5List {
+			if md5 == sum {
+				os.Remove(db.DbPath + info.Name())
+				break
+			}
+		}
+		md5List = append(md5List, sum)
+
+		if dt.Format("2006") != info.ModTime().Format("2006") {
 			os.Remove(db.DbPath + info.Name())
 		}
 	}
-
 	fmt.Println("done")
 }
 
