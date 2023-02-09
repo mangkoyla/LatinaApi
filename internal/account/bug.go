@@ -15,7 +15,7 @@ func PopulateBugs(accounts []db.DBScheme, cdn, sni []string) []db.DBScheme {
 		case "cdn":
 			accounts[i].Server = cdn[randCdn]
 		case "sni":
-			accounts[i].ServiceName = sni[randSni]
+			accounts[i].SNI = sni[randSni]
 			accounts[i].Host = sni[randSni]
 		}
 	}

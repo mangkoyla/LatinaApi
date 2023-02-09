@@ -24,7 +24,7 @@ func ToClash(accounts []db.DBScheme) string {
 		case C.TypeVMess, C.TypeVLESS:
 			proxy = append(proxy, fmt.Sprintf("    type: %s", account.VPN))
 			proxy = append(proxy, fmt.Sprintf("    uuid: %s", account.UUID))
-			proxy = append(proxy, fmt.Sprintf("    cipher: %s", account.Security))
+			proxy = append(proxy, fmt.Sprintf("    cipher: %s", "auto"))
 			proxy = append(proxy, fmt.Sprintf("    tls: %t", account.TLS))
 			proxy = append(proxy, fmt.Sprintf("    udp: %t", true))
 			proxy = append(proxy, fmt.Sprintf("    skip-cert-verify: %t", true))

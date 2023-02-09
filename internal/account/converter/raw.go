@@ -44,8 +44,8 @@ func ToRaw(accounts []db.DBScheme) string {
 			}
 			j, _ := json.Marshal(vmess)
 			result = append(result, "vmess://"+helper.EncodeToBase64(string(j)))
-		case C.TypeTrojan:
-			result = append(result, fmt.Sprintf("trojan://%s@%s:%d?security=%s&type=%s&host=%s&sni=%s&path=%s&serviceName=%s#%s", account.Password, account.Server, account.ServerPort, tls, account.Transport, account.Host, account.SNI, account.Path, account.ServiceName, url.QueryEscape(account.Remark)))
+		case C.TypeTrojan, C.TypeVLESS:
+			result = append(result, fmt.Sprintf("%s://%s@%s:%d?security=%s&type=%s&host=%s&sni=%s&path=%s&serviceName=%s#%s", account.VPN, account.Password, account.Server, account.ServerPort, tls, account.Transport, account.Host, account.SNI, account.Path, account.ServiceName, url.QueryEscape(account.Remark)))
 		case C.TypeShadowsocks:
 			result = append(result, "ss://"+helper.EncodeToBase64(fmt.Sprintf("%s:%s@%s:%d", account.Method, account.Password, account.Server, account.ServerPort))+fmt.Sprintf("/?plugin=%s#%s", account.Plugin+";"+account.PluginOpts, url.QueryEscape(account.Remark)))
 		case C.TypeShadowsocksR:

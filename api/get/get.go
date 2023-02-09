@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strings"
 
+	apiHelper "github.com/LalatinaHub/LatinaApi/api/helper"
 	"github.com/LalatinaHub/LatinaApi/internal/account"
 	"github.com/LalatinaHub/LatinaApi/internal/account/converter"
 	"github.com/LalatinaHub/LatinaApi/internal/helper"
@@ -26,10 +27,8 @@ func GetHandler(c *gin.Context) {
 	switch format {
 	case "clash":
 		c.String(http.StatusOK, converter.ToClash(proxies))
-	case "singbox":
-		c.JSON(http.StatusOK, converter.ToSingBox(proxies))
 	case "surfboard":
-		c.String(http.StatusOK, converter.ToSurfboard(proxies))
+		c.String(http.StatusOK, strings.Replace(converter.ToSurfboard(proxies), "URL_PLACEHOLDER", apiHelper.GetRequestedURL(c), 1))
 	case "raw":
 		c.String(http.StatusOK, converter.ToRaw(proxies))
 	default:

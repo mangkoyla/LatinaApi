@@ -79,7 +79,7 @@ func BuildFilter(c *gin.Context) string {
 				valueFilter = append(valueFilter, fmt.Sprintf(`%s="%s"`, strings.ToUpper(key), value))
 			}
 
-			filter = append(filter, fmt.Sprintf("(%s)", strings.Join(valueFilter[:], " AND ")))
+			filter = append(filter, fmt.Sprintf("(%s)", strings.Join(valueFilter[:], " OR ")))
 		}
 	}
 
