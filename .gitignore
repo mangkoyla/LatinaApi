@@ -23,6 +23,7 @@ go.work
 # Custom
 *.sqlite
 *.db
+*.json
 public/*
 Latina*
 

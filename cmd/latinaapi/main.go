@@ -1,26 +1,23 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"time"
 
 	"github.com/LalatinaHub/LatinaApi/api/router"
-	"github.com/LalatinaHub/LatinaApi/cmd/dl"
+	latinasub "github.com/LalatinaHub/LatinaSub-go"
+	"github.com/LalatinaHub/LatinaSub-go/db"
 	"github.com/go-co-op/gocron"
-	_ "github.com/mattn/go-sqlite3"
 )
 
 func cronJob() {
 	schedule := gocron.NewScheduler(time.UTC)
 
-	schedule.Every(5).Minutes().Do(func() {
-		dl.DownloadResource()
+	schedule.Every(1).Hour().Do(func() {
+		fmt.Println("Scraping accounts ...")
+		latinasub.Start()
 	})
-
-	// On test
-	// schedule.Every(10).Hours().Do(func() {
-	// 	dl.Scrape()
-	// })
 
 	schedule.StartAsync()
 }
@@ -35,6 +32,7 @@ func checkDir() {
 func main() {
 	// Check directory
 	checkDir()
+	db.Init()
 
 	// Set cron job to Download database
 	cronJob()
