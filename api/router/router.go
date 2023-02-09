@@ -23,11 +23,10 @@ func Start() {
 
 		c.Writer.Header().Set("Content-Type", "text/html")
 		c.String(http.StatusNotFound, string(html))
-		return
 	})
 
 	Router.GET("/get", getRoute.GetHandler)
-	// Router.GET("/log", logRoute.LogHandler)
+	Router.StaticFS("/log", http.Dir("log"))
 
 	Router.Use(static.Serve("/", static.LocalFile("public/", false)))
 

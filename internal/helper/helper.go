@@ -3,6 +3,7 @@ package helper
 import (
 	"encoding/base64"
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 
@@ -94,4 +95,22 @@ func BuildFilter(c *gin.Context) string {
 	} else {
 		return result
 	}
+}
+
+func LogFuncToFile(f func(), filename string) {
+	stdout := os.Stdout
+
+	_ = os.Mkdir("log/", os.ModePerm)
+	_ = os.Remove("log/" + filename)
+	logFile, _ := os.OpenFile("log/"+filename, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	defer logFile.Close()
+
+	os.Stdout = logFile
+	defer func() {
+		// Restore stdout
+		os.Stdout = stdout
+	}()
+
+	// Run the function
+	f()
 }

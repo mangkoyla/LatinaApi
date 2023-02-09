@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/LalatinaHub/LatinaApi/api/router"
+	"github.com/LalatinaHub/LatinaApi/internal/helper"
 	latinasub "github.com/LalatinaHub/LatinaSub-go"
 	"github.com/LalatinaHub/LatinaSub-go/db"
 	"github.com/go-co-op/gocron"
@@ -16,7 +17,9 @@ func cronJob() {
 
 	schedule.Every(1).Hour().Do(func() {
 		fmt.Println("Scraping accounts ...")
-		latinasub.Start()
+		helper.LogFuncToFile(func() {
+			latinasub.Start()
+		}, "scrape.log")
 	})
 
 	schedule.StartAsync()

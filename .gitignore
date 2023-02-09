@@ -24,6 +24,7 @@ go.work
 *.sqlite
 *.db
 *.json
+*.log
 public/*
 Latina*
 
