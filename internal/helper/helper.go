@@ -21,8 +21,7 @@ func BuildFilter(c *gin.Context) string {
 
 	for key, value := range c.Request.URL.Query() {
 		switch key {
-		case "format":
-		case "sni", "cdn":
+		case "format", "cdn", "sni", "limit": // Ignore special queries
 		case "include":
 			var includeFilter []string
 			includes := strings.Split(value[0], ",")
@@ -84,6 +83,11 @@ func BuildFilter(c *gin.Context) string {
 	}
 
 	result = strings.Join(filter[:], " AND ")
+	result = result + " ORDER BY RANDOM()"
+	if limit := c.Query("limit"); limit != "" {
+		intLimit, _ := strconv.Atoi(limit)
+		result = result + fmt.Sprintf(" LIMIT %d", intLimit)
+	}
 
 	if result != "" {
 		return "WHERE " + result
