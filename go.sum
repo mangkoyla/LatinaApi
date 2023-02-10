@@ -14,6 +14,8 @@ github.com/LalatinaHub/LatinaSub-go v0.0.0-20230209012436-d3d99d9ceb70 h1:Mq153t
 github.com/LalatinaHub/LatinaSub-go v0.0.0-20230209012436-d3d99d9ceb70/go.mod h1:kzL7zF0LZ/qKXP0UF9D9PLALpVKZGFehNtaIDG3ecpY=
 github.com/LalatinaHub/LatinaSub-go v0.0.0-20230209015228-8e8c0ae8b984 h1:92mnyyptYLTL5rNa0ytw65SnH14iD5A2Z6jzoJN/gMk=
 github.com/LalatinaHub/LatinaSub-go v0.0.0-20230209015228-8e8c0ae8b984/go.mod h1:kzL7zF0LZ/qKXP0UF9D9PLALpVKZGFehNtaIDG3ecpY=
+github.com/LalatinaHub/LatinaSub-go v0.0.0-20230210123526-e633625259c9 h1:dQGrxe5ImxhCmsol9xpoAAqN8iAM/9P5LZbkPOJAaeg=
+github.com/LalatinaHub/LatinaSub-go v0.0.0-20230210123526-e633625259c9/go.mod h1:kzL7zF0LZ/qKXP0UF9D9PLALpVKZGFehNtaIDG3ecpY=
 github.com/ajg/form v1.5.1 h1:t9c7v8JUKu/XxOGBU0yjNpaMloxGEJhUkqFRq0ibGeU=
 github.com/ajg/form v1.5.1/go.mod h1:uL1WgH+h2mgNtvBq0339dVnzXdBETtL2LeUXaIv25UY=
 github.com/andybalholm/brotli v1.0.4 h1:V7DdXeJtZscaqfNuAdSRuRFzuiKlHSC/Zh3zl9qY3JY=
