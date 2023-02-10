@@ -83,14 +83,13 @@ func BuildFilter(c *gin.Context) string {
 		}
 	}
 
-	result = strings.Join(filter[:], " AND ")
-	result = result + " ORDER BY RANDOM()"
-	if limit := c.Query("limit"); limit != "" {
-		intLimit, _ := strconv.Atoi(limit)
-		result = result + fmt.Sprintf(" LIMIT %d", intLimit)
-	}
-
-	if result != "" {
+	if len(filter) > 0 {
+		result = strings.Join(filter[:], " AND ")
+		result = result + " ORDER BY RANDOM()"
+		if limit := c.Query("limit"); limit != "" {
+			intLimit, _ := strconv.Atoi(limit)
+			result = result + fmt.Sprintf(" LIMIT %d", intLimit)
+		}
 		return "WHERE " + result
 	} else {
 		return result
