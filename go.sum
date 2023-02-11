@@ -16,6 +16,10 @@ github.com/LalatinaHub/LatinaSub-go v0.0.0-20230209015228-8e8c0ae8b984 h1:92mnyy
 github.com/LalatinaHub/LatinaSub-go v0.0.0-20230209015228-8e8c0ae8b984/go.mod h1:kzL7zF0LZ/qKXP0UF9D9PLALpVKZGFehNtaIDG3ecpY=
 github.com/LalatinaHub/LatinaSub-go v0.0.0-20230210123526-e633625259c9 h1:dQGrxe5ImxhCmsol9xpoAAqN8iAM/9P5LZbkPOJAaeg=
 github.com/LalatinaHub/LatinaSub-go v0.0.0-20230210123526-e633625259c9/go.mod h1:kzL7zF0LZ/qKXP0UF9D9PLALpVKZGFehNtaIDG3ecpY=
+github.com/LalatinaHub/LatinaSub-go v0.0.0-20230210231632-2efcdb6fcd80 h1:/ejVmkv359p92iJ44bfNoPIK9t+4HcMPBR96k98VbnA=
+github.com/LalatinaHub/LatinaSub-go v0.0.0-20230210231632-2efcdb6fcd80/go.mod h1:kzL7zF0LZ/qKXP0UF9D9PLALpVKZGFehNtaIDG3ecpY=
+github.com/LalatinaHub/LatinaSub-go v0.0.0-20230210234855-4af58034c52b h1:im3rDYdSimSs2UyBseyPDltuwjKZ0q7AJ+EPt7g8a/U=
+github.com/LalatinaHub/LatinaSub-go v0.0.0-20230210234855-4af58034c52b/go.mod h1:kzL7zF0LZ/qKXP0UF9D9PLALpVKZGFehNtaIDG3ecpY=
 github.com/ajg/form v1.5.1 h1:t9c7v8JUKu/XxOGBU0yjNpaMloxGEJhUkqFRq0ibGeU=
 github.com/ajg/form v1.5.1/go.mod h1:uL1WgH+h2mgNtvBq0339dVnzXdBETtL2LeUXaIv25UY=
 github.com/andybalholm/brotli v1.0.4 h1:V7DdXeJtZscaqfNuAdSRuRFzuiKlHSC/Zh3zl9qY3JY=
