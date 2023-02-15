@@ -84,16 +84,24 @@ func BuildFilter(c *gin.Context) string {
 	}
 
 	if len(filter) > 0 {
-		result = strings.Join(filter[:], " AND ")
-		result = result + " ORDER BY RANDOM()"
-		if limit := c.Query("limit"); limit != "" {
-			intLimit, _ := strconv.Atoi(limit)
-			result = result + fmt.Sprintf(" LIMIT %d", intLimit)
-		}
-		return "WHERE " + result
-	} else {
-		return result
+		result = "WHERE " + strings.Join(filter[:], " AND ")
 	}
+
+	result = result + " ORDER BY RANDOM()"
+	if limit := c.Query("limit"); limit != "" {
+		intLimit, _ := strconv.Atoi(limit)
+		if intLimit > 10 {
+			intLimit = 10
+		} else if intLimit <= 0 {
+			intLimit = 1
+		}
+
+		result = result + fmt.Sprintf(" LIMIT %d", intLimit)
+	} else {
+		result = result + " LIMIT 10"
+	}
+
+	return result
 }
 
 func LogFuncToFile(f func(), filename string) {

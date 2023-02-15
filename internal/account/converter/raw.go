@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"strconv"
 	"strings"
 
 	"github.com/LalatinaHub/LatinaApi/internal/account/protocol"
@@ -45,10 +46,37 @@ func ToRaw(accounts []db.DBScheme) string {
 			}
 			j, _ := json.Marshal(vmess)
 			result = append(result, "vmess://"+helper.EncodeToBase64(string(j)))
-		case C.TypeVLESS:
-			result = append(result, fmt.Sprintf("vless://%s@%s:%d?security=%s&type=%s&host=%s&sni=%s&path=%s&serviceName=%s#%s", account.UUID, account.Server, account.ServerPort, tls, account.Transport, account.Host, account.SNI, account.Path, account.ServiceName, url.QueryEscape(account.Remark)))
-		case C.TypeTrojan:
-			result = append(result, fmt.Sprintf("trojan://%s@%s:%d?security=%s&type=%s&host=%s&sni=%s&path=%s&serviceName=%s#%s", account.Password, account.Server, account.ServerPort, tls, account.Transport, account.Host, account.SNI, account.Path, account.ServiceName, url.QueryEscape(account.Remark)))
+		case C.TypeVLESS, C.TypeTrojan:
+			u := url.URL{
+				Scheme:   account.VPN,
+				Host:     account.Server + ":" + strconv.Itoa(account.ServerPort),
+				Fragment: account.Remark,
+			}
+
+			// Set userinfo
+			switch account.VPN {
+			case C.TypeVLESS:
+				u.User = url.User(account.UUID)
+			default:
+				u.User = url.User(account.Password)
+			}
+
+			// Set queries
+			q := u.Query()
+			q.Set("security", tls)
+			q.Set("type", account.Transport)
+			q.Set("sni", account.SNI)
+			q.Set("allowInsecure", "true")
+			switch account.Transport {
+			case C.V2RayTransportTypeWebsocket:
+				q.Set("host", account.Host)
+				q.Set("path", account.Path)
+			case C.V2RayTransportTypeGRPC:
+				q.Set("serviceName", account.ServiceName)
+			}
+
+			u.RawQuery, _ = url.PathUnescape(q.Encode())
+			result = append(result, u.String())
 		case C.TypeShadowsocks:
 			result = append(result, "ss://"+helper.EncodeToBase64(fmt.Sprintf("%s:%s@%s:%d", account.Method, account.Password, account.Server, account.ServerPort))+fmt.Sprintf("/?plugin=%s#%s", account.Plugin+";"+account.PluginOpts, url.QueryEscape(account.Remark)))
 		case C.TypeShadowsocksR:

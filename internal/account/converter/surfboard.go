@@ -32,6 +32,11 @@ func ToSurfboard(accounts []db.DBScheme) string {
 			// proxy = fmt.Sprintf("%s=%s,%s,%d,encrypt-method=%s,password=%s,udp-relay=true,obfs=%s,obfs-host=%s,obfs-uri=%s", account.Remark, account.VPN, account.Server, account.ServerPort, account.Method, account.Password, obfs, account.Host, account.Path)
 		}
 
+		switch account.Transport {
+		case C.V2RayTransportTypeWebsocket:
+			proxy = fmt.Sprintf("%s,ws=%t,ws-path=%s,ws-headers:Host=%s", proxy, true, account.Path, account.Host)
+		}
+
 		proxies = append(proxies, proxy)
 	}
 
