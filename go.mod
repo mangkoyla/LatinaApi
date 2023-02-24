@@ -3,10 +3,10 @@ module github.com/LalatinaHub/LatinaApi
 go 1.20
 
 require (
-	github.com/LalatinaHub/LatinaSub-go v0.0.0-20230221124738-d7a38df519cf
+	github.com/LalatinaHub/LatinaSub-go v0.0.0-20230224065939-d9e02e06bddf
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-co-op/gocron v1.18.0
-	github.com/sagernet/sing-box v1.1.5-0.20230202083655-96d4ca79ca36
+	github.com/sagernet/sing-box v1.1.6
 )
 
 require (
@@ -29,7 +29,7 @@ require (
 	github.com/golang/mock v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/btree v1.1.2 // indirect
-	github.com/google/pprof v0.0.0-20230207041349-798e818bf904 // indirect
+	github.com/google/pprof v0.0.0-20230222194610-99052d3372e7 // indirect
 	github.com/hashicorp/yamux v0.1.1 // indirect
 	github.com/klauspost/compress v1.15.15 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
@@ -66,14 +66,14 @@ require (
 	go.uber.org/zap v1.24.0 // indirect
 	go4.org/netipx v0.0.0-20230125063823-8449b0a6169f // indirect
 	golang.org/x/arch v0.2.0 // indirect
-	golang.org/x/exp v0.0.0-20230213192124-5e25df0256eb // indirect
+	golang.org/x/exp v0.0.0-20230223210539-50820d90acfd // indirect
 	golang.org/x/mod v0.8.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	golang.org/x/tools v0.6.0 // indirect
-	google.golang.org/genproto v0.0.0-20230221151758-ace64dc21148 // indirect
+	google.golang.org/genproto v0.0.0-20230223222841-637eb2293923 // indirect
 	google.golang.org/grpc v1.53.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	gvisor.dev/gvisor v0.0.0-20230222010602-6a4908b26239 // indirect
+	gvisor.dev/gvisor v0.0.0-20230224023203-6e425b0c57fc // indirect
 	lukechampine.com/blake3 v1.1.7 // indirect
 )
 
