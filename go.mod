@@ -3,7 +3,7 @@ module github.com/LalatinaHub/LatinaApi
 go 1.20
 
 require (
-	github.com/LalatinaHub/LatinaSub-go v0.0.0-20230224065939-d9e02e06bddf
+	github.com/LalatinaHub/LatinaSub-go v0.0.0-20230224222820-963aa2488815
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-co-op/gocron v1.18.0
 	github.com/sagernet/sing-box v1.1.6
@@ -14,7 +14,7 @@ require (
 	github.com/Dreamacro/clash v1.13.0 // indirect
 	github.com/ajg/form v1.5.1 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/bytedance/sonic v1.8.1 // indirect
+	github.com/bytedance/sonic v1.8.2 // indirect
 	github.com/caddyserver/certmagic v0.17.2 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
 	github.com/cloudflare/circl v1.3.2 // indirect
@@ -66,14 +66,14 @@ require (
 	go.uber.org/zap v1.24.0 // indirect
 	go4.org/netipx v0.0.0-20230125063823-8449b0a6169f // indirect
 	golang.org/x/arch v0.2.0 // indirect
-	golang.org/x/exp v0.0.0-20230223210539-50820d90acfd // indirect
+	golang.org/x/exp v0.0.0-20230224173230-c95f2b4c22f2 // indirect
 	golang.org/x/mod v0.8.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	golang.org/x/tools v0.6.0 // indirect
 	google.golang.org/genproto v0.0.0-20230223222841-637eb2293923 // indirect
 	google.golang.org/grpc v1.53.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	gvisor.dev/gvisor v0.0.0-20230224023203-6e425b0c57fc // indirect
+	gvisor.dev/gvisor v0.0.0-20230224200604-34ff3ebe0556 // indirect
 	lukechampine.com/blake3 v1.1.7 // indirect
 )
 
