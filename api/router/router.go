@@ -7,6 +7,7 @@ import (
 
 	getRoute "github.com/LalatinaHub/LatinaApi/api/get"
 	logRoute "github.com/LalatinaHub/LatinaApi/api/log"
+	parseRoute "github.com/LalatinaHub/LatinaApi/api/parse"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 )
@@ -28,6 +29,7 @@ func Start() {
 
 	Router.GET("/get", getRoute.GetHandler)
 	Router.GET("/log", logRoute.LogHandler)
+	Router.POST("/parse", parseRoute.ParseHandler)
 
 	Router.Use(static.Serve("/", static.LocalFile("public/", false)))
 
