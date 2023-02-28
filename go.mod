@@ -31,14 +31,14 @@ require (
 	github.com/google/btree v1.1.2 // indirect
 	github.com/google/pprof v0.0.0-20230222194610-99052d3372e7 // indirect
 	github.com/hashicorp/yamux v0.1.1 // indirect
-	github.com/klauspost/compress v1.15.15 // indirect
+	github.com/klauspost/compress v1.16.0 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
 	github.com/libdns/libdns v0.2.1 // indirect
 	github.com/logrusorgru/aurora v2.0.3+incompatible // indirect
 	github.com/mattn/go-sqlite3 v1.14.16 // indirect
 	github.com/mholt/acmez v1.1.0 // indirect
-	github.com/miekg/dns v1.1.50 // indirect
-	github.com/onsi/ginkgo/v2 v2.8.3 // indirect
+	github.com/miekg/dns v1.1.51 // indirect
+	github.com/onsi/ginkgo/v2 v2.8.4 // indirect
 	github.com/oschwald/maxminddb-golang v1.10.0 // indirect
 	github.com/pires/go-proxyproto v0.6.2 // indirect
 	github.com/quic-go/qpack v0.4.0 // indirect
@@ -70,10 +70,10 @@ require (
 	golang.org/x/mod v0.8.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	golang.org/x/tools v0.6.0 // indirect
-	google.golang.org/genproto v0.0.0-20230223222841-637eb2293923 // indirect
+	google.golang.org/genproto v0.0.0-20230227214838-9b19f0bdc514 // indirect
 	google.golang.org/grpc v1.53.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	gvisor.dev/gvisor v0.0.0-20230224200604-34ff3ebe0556 // indirect
+	gvisor.dev/gvisor v0.0.0-20230227232759-8035cf9ed59e // indirect
 	lukechampine.com/blake3 v1.1.7 // indirect
 )
 
@@ -85,7 +85,7 @@ require (
 	github.com/go-playground/validator/v10 v10.11.2 // indirect
 	github.com/goccy/go-json v0.10.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/leodido/go-urn v1.2.1 // indirect
+	github.com/leodido/go-urn v1.2.2 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
