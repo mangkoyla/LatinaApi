@@ -13,11 +13,8 @@ WORKDIR /usr/src/app
 COPY . .
 COPY --from=web_builder /usr/src/web/docs/.vitepress/dist/ /usr/src/app/public/
 
-RUN go get -u ./... && go mod tidy && go mod verify
-RUN go build -o ./latinaapi ./cmd/latinaapi/main.go
-
 ENV GIN_MODE=release
 ENV API_MODE=true
 EXPOSE 8080
 
-CMD ["./latinaapi"]
+CMD ["bash", "start.sh"]

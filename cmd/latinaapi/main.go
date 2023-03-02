@@ -15,7 +15,7 @@ import (
 func cronJob() {
 	schedule := gocron.NewScheduler(time.UTC)
 
-	schedule.Every(6).Hour().Do(func() {
+	schedule.Every(10).Hour().Do(func() {
 		fmt.Println("Scraping accounts ...")
 		helper.LogFuncToFile(func() {
 			latinasub.Start()
