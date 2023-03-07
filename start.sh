@@ -1,4 +1,13 @@
 #!/bin/bash
 
-go get -u ./... && go mod tidy && go mod verify
-go run cmd/latinaapi/main.go
+# Update latinasub module
+go get -v -u github.com/LalatinaHub/LatinaSub-go@main
+
+# Tidy and verify all modules
+go mod download && go mod tidy && go mod verify
+
+# Compile software
+go build -tags with_grpc -o ./latinaapi ./cmd/latinaapi/main.go
+
+# Run software
+./latinaapi
