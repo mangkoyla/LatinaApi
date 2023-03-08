@@ -78,7 +78,16 @@ func ToRaw(accounts []db.DBScheme) string {
 			u.RawQuery, _ = url.PathUnescape(q.Encode())
 			result = append(result, u.String())
 		case C.TypeShadowsocks:
-			result = append(result, "ss://"+helper.EncodeToBase64(fmt.Sprintf("%s:%s@%s:%d", account.Method, account.Password, account.Server, account.ServerPort))+fmt.Sprintf("/?plugin=%s#%s", account.Plugin+";"+account.PluginOpts, url.QueryEscape(account.Remark)))
+			var (
+				cred   string = strings.TrimSuffix(helper.EncodeToBase64(fmt.Sprintf("%s:%s@%s:%d", account.Method, account.Password, account.Server, account.ServerPort)), "=")
+				plugin string = ""
+			)
+
+			if account.Plugin != "" {
+				plugin = "/?plugin=" + account.Plugin + ";" + account.PluginOpts
+			}
+
+			result = append(result, "ss://"+cred+plugin+"#"+url.QueryEscape(account.Remark))
 		case C.TypeShadowsocksR:
 			password := helper.EncodeToBase64(account.Password)
 			remarks := helper.EncodeToBase64(account.Remark)
