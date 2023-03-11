@@ -13,7 +13,7 @@ WORKDIR /usr/src/app
 COPY . .
 COPY --from=web_builder /usr/src/web/docs/.vitepress/dist/ /usr/src/app/public/
 
-RUN go get -v -u github.com/LalatinaHub/LatinaSub-go@main
+RUN go get -v github.com/LalatinaHub/LatinaSub-go@main
 RUN go mod download && go mod tidy && go mod verify
 RUN go build -tags with_grpc -o ./latinaapi ./cmd/latinaapi/main.go
 

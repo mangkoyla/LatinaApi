@@ -3,9 +3,12 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/LalatinaHub/LatinaApi/api/router"
+	"github.com/LalatinaHub/LatinaApi/internal/account"
+	"github.com/LalatinaHub/LatinaApi/internal/account/converter"
 	"github.com/LalatinaHub/LatinaApi/internal/helper"
 	latinasub "github.com/LalatinaHub/LatinaSub-go"
 	"github.com/LalatinaHub/LatinaSub-go/db"
@@ -13,16 +16,29 @@ import (
 )
 
 func cronJob() {
-	schedule := gocron.NewScheduler(time.UTC)
+	schedule := gocron.NewScheduler(time.Now().Location())
+	schedule.SetMaxConcurrentJobs(1, gocron.RescheduleMode)
 
-	schedule.Every(10).Hour().Do(func() {
+	schedule.Cron("30 * * * *").Tag("filter").Do(func() {
+		fmt.Println("Filtering accounts ...")
+		helper.LogFuncToFile(func() {
+			nodes := strings.Split(converter.ToRaw(account.Get("")), "\n")
+
+			if len(nodes) > 500 {
+				latinasub.Start(nodes)
+			}
+		}, "scrape.log")
+	})
+
+	schedule.Cron("0 */12 * * *").Tag("scrape").Do(func() {
 		fmt.Println("Scraping accounts ...")
 		helper.LogFuncToFile(func() {
-			latinasub.Start()
+			latinasub.Start([]string{})
 		}, "scrape.log")
 	})
 
 	schedule.StartAsync()
+	schedule.RunByTag("scrape")
 }
 
 func checkDir() {

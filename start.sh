@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Update latinasub module
-go get -v -u github.com/LalatinaHub/LatinaSub-go@main
+go get -v github.com/LalatinaHub/LatinaSub-go@main
 
 # Tidy and verify all modules
 go mod download && go mod tidy && go mod verify
