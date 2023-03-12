@@ -44,6 +44,12 @@ func ToRaw(accounts []db.DBScheme) string {
 				Sni:            account.SNI,
 				Host:           account.Host,
 			}
+
+			switch account.Transport {
+			case "grpc":
+				vmess.Path = account.ServiceName
+			}
+
 			j, _ := json.Marshal(vmess)
 			result = append(result, "vmess://"+helper.EncodeToBase64(string(j)))
 		case C.TypeVLESS, C.TypeTrojan:

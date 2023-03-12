@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Update latinasub module
+# Update latina modules
+go get -v github.com/LalatinaHub/LatinaBot@main
 go get -v github.com/LalatinaHub/LatinaSub-go@main
 
 # Tidy and verify all modules
