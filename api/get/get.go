@@ -5,9 +5,9 @@ import (
 	"strings"
 
 	apiHelper "github.com/LalatinaHub/LatinaApi/api/helper"
-	"github.com/LalatinaHub/LatinaApi/internal/account"
-	"github.com/LalatinaHub/LatinaApi/internal/account/converter"
-	"github.com/LalatinaHub/LatinaApi/internal/helper"
+	"github.com/LalatinaHub/LatinaApi/common/account"
+	"github.com/LalatinaHub/LatinaApi/common/account/converter"
+	"github.com/LalatinaHub/LatinaApi/common/helper"
 	"github.com/gin-gonic/gin"
 )
 

@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/LalatinaHub/LatinaApi/api/router"
-	"github.com/LalatinaHub/LatinaApi/internal/account"
-	"github.com/LalatinaHub/LatinaApi/internal/account/converter"
-	"github.com/LalatinaHub/LatinaApi/internal/helper"
+	"github.com/LalatinaHub/LatinaApi/common/account"
+	"github.com/LalatinaHub/LatinaApi/common/account/converter"
+	"github.com/LalatinaHub/LatinaApi/common/helper"
 	latinasub "github.com/LalatinaHub/LatinaSub-go"
 	"github.com/LalatinaHub/LatinaSub-go/db"
 	"github.com/go-co-op/gocron"

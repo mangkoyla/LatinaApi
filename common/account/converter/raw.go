@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/LalatinaHub/LatinaApi/internal/account/protocol"
-	"github.com/LalatinaHub/LatinaApi/internal/helper"
+	"github.com/LalatinaHub/LatinaApi/common/account/protocol"
+	"github.com/LalatinaHub/LatinaApi/common/helper"
 	"github.com/LalatinaHub/LatinaSub-go/db"
 	C "github.com/sagernet/sing-box/constant"
 )
