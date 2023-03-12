@@ -10,6 +10,7 @@ import (
 	"github.com/LalatinaHub/LatinaApi/common/account"
 	"github.com/LalatinaHub/LatinaApi/common/account/converter"
 	"github.com/LalatinaHub/LatinaApi/common/helper"
+	latinabot "github.com/LalatinaHub/LatinaBot"
 	latinasub "github.com/LalatinaHub/LatinaSub-go"
 	"github.com/LalatinaHub/LatinaSub-go/db"
 	"github.com/go-co-op/gocron"
@@ -56,6 +57,12 @@ func main() {
 	// Set cron job to Download database
 	cronJob()
 
-	// Start the router
+	// Start telegram bot
+	if os.Getenv("BOT_TOKEN") != "" {
+		fmt.Println("Starting telegram bot ...")
+		go latinabot.Start()
+	}
+
+	// Start server
 	router.Start()
 }

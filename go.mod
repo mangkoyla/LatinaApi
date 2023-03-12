@@ -3,6 +3,7 @@ module github.com/LalatinaHub/LatinaApi
 go 1.20
 
 require (
+	github.com/LalatinaHub/LatinaBot v0.0.0-20230312042927-2a69968e5dd1
 	github.com/LalatinaHub/LatinaSub-go v0.0.0-20230310234745-556f67937278
 	github.com/gin-gonic/gin v1.9.0
 	github.com/go-co-op/gocron v1.18.0
@@ -12,6 +13,7 @@ require (
 require (
 	berty.tech/go-libtor v1.0.385 // indirect
 	github.com/Dreamacro/clash v1.13.0 // indirect
+	github.com/NicoNex/echotron/v3 v3.23.3 // indirect
 	github.com/ajg/form v1.5.1 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/bytedance/sonic v1.8.2 // indirect
