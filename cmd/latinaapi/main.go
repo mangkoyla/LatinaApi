@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -14,6 +16,12 @@ import (
 	latinasub "github.com/LalatinaHub/LatinaSub-go"
 	"github.com/LalatinaHub/LatinaSub-go/db"
 	"github.com/go-co-op/gocron"
+)
+
+var (
+	botToken = os.Getenv("BOT_TOKEN")
+	chatID   = os.Getenv("CHAT_ID")
+	topicID  = os.Getenv("TOPIC_ID")
 )
 
 func cronJob() {
@@ -38,6 +46,24 @@ func cronJob() {
 		}, "scrape.log")
 	})
 
+	// Telegram bot
+	if botToken != "" {
+		fmt.Println("Starting telegram bot ...")
+		go latinabot.Start()
+
+		if chatID != "" && topicID != "" {
+			var (
+				intChatID, _  = strconv.Atoi(chatID)
+				intTopicID, _ = strconv.Atoi(topicID)
+			)
+
+			schedule.Every(3).Hour().Do(func() {
+				log.Println("Send VPN sample to channel ...")
+				go latinabot.SendVPNToTopic(int64(intChatID), intTopicID)
+			})
+		}
+	}
+
 	schedule.StartAsync()
 	schedule.RunByTag("scrape")
 }
@@ -56,12 +82,6 @@ func main() {
 
 	// Set cron job to Download database
 	cronJob()
-
-	// Start telegram bot
-	if os.Getenv("BOT_TOKEN") != "" {
-		fmt.Println("Starting telegram bot ...")
-		go latinabot.Start()
-	}
 
 	// Start server
 	router.Start()
