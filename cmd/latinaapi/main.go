@@ -19,24 +19,21 @@ import (
 )
 
 var (
-	botToken = os.Getenv("BOT_TOKEN")
-	chatID   = os.Getenv("CHAT_ID")
-	topicID  = os.Getenv("TOPIC_ID")
+	botToken      = os.Getenv("BOT_TOKEN")
+	chatID        = os.Getenv("CHAT_ID")
+	sampleTopicID = os.Getenv("SAMPLE_TOPIC_ID")
 )
 
 func cronJob() {
 	schedule := gocron.NewScheduler(time.Now().Location())
-	schedule.SetMaxConcurrentJobs(1, gocron.RescheduleMode)
+	// schedule.SetMaxConcurrentJobs(1, gocron.RescheduleMode)
 
 	schedule.Cron("30 * * * *").Tag("filter").Do(func() {
-		fmt.Println("Filtering accounts ...")
-		helper.LogFuncToFile(func() {
-			nodes := strings.Split(converter.ToRaw(account.Get("")), "\n")
-
-			if len(nodes) > 500 {
-				latinasub.Start(nodes)
-			}
-		}, "scrape.log")
+		nodes := strings.Split(converter.ToRaw(account.Get("")), "\n")
+		if len(nodes) > 500 {
+			fmt.Println("Filtering accounts ...")
+			latinasub.Start(nodes)
+		}
 	})
 
 	schedule.Cron("0 */12 * * *").Tag("scrape").Do(func() {
@@ -51,16 +48,18 @@ func cronJob() {
 		fmt.Println("Starting telegram bot ...")
 		go latinabot.Start()
 
-		if chatID != "" && topicID != "" {
+		if chatID != "" {
 			var (
-				intChatID, _  = strconv.Atoi(chatID)
-				intTopicID, _ = strconv.Atoi(topicID)
+				intChatID, _        = strconv.Atoi(chatID)
+				intSampleTopicID, _ = strconv.Atoi(sampleTopicID)
 			)
 
-			schedule.Every(3).Hour().Do(func() {
-				log.Println("Send VPN sample to channel ...")
-				go latinabot.SendVPNToTopic(int64(intChatID), intTopicID)
-			})
+			if intSampleTopicID > 0 {
+				schedule.Every(3).Hour().Do(func() {
+					log.Println("Send VPN sample to channel ...")
+					go latinabot.SendVPNToTopic(int64(intChatID), intSampleTopicID)
+				})
+			}
 		}
 	}
 
@@ -80,7 +79,7 @@ func main() {
 	checkDir()
 	db.Init()
 
-	// Set cron job to Download database
+	// Set cron job
 	cronJob()
 
 	// Start server

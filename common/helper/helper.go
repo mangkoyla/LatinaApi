@@ -14,6 +14,28 @@ func EncodeToBase64(text string) string {
 	return strings.TrimSuffix(base64.StdEncoding.EncodeToString([]byte(text)), "=")
 }
 
+func GetLastLog() string {
+	var (
+		file, err          = os.ReadFile("log/scrape.log")
+		logLines  []string = strings.Split(string(file), "\n")
+		logStr    string
+	)
+
+	if err != nil {
+		logStr = err.Error()
+	} else {
+		for i := len(logLines) - 1; i > len(logLines)-100; i-- {
+			if i <= -1 {
+				break
+			}
+
+			logStr = logStr + logLines[i] + "\n"
+		}
+	}
+
+	return logStr
+}
+
 func BuildFilter(c *gin.Context) string {
 	var (
 		filter []string
