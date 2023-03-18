@@ -13,6 +13,10 @@ WORKDIR /usr/src/app
 COPY . .
 COPY --from=web_builder /usr/src/web/docs/.vitepress/dist/ /usr/src/app/public/
 
+# Drop replace
+RUN go mod edit -dropreplace="github.com/LalatinaHub/LatinaBot"
+RUN go mod edit -dropreplace="github.com/LalatinaHub/LatinaSub-go"
+
 RUN go get -v github.com/LalatinaHub/LatinaBot@main
 RUN go get -v github.com/LalatinaHub/LatinaSub-go@main
 RUN go mod download && go mod tidy && go mod verify
