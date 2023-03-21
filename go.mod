@@ -40,9 +40,9 @@ require (
 	github.com/hashicorp/yamux v0.1.1 // indirect
 	github.com/klauspost/compress v1.16.0 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
+	github.com/lib/pq v1.10.7 // indirect
 	github.com/libdns/libdns v0.2.1 // indirect
 	github.com/logrusorgru/aurora v2.0.3+incompatible // indirect
-	github.com/mattn/go-sqlite3 v1.14.16 // indirect
 	github.com/mholt/acmez v1.1.0 // indirect
 	github.com/miekg/dns v1.1.51 // indirect
 	github.com/onsi/ginkgo/v2 v2.8.4 // indirect

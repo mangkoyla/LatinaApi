@@ -50,7 +50,7 @@ func BuildFilter(c *gin.Context) string {
 			includes := strings.Split(value[0], ",")
 
 			for _, include := range includes {
-				includeFilter = append(includeFilter, fmt.Sprintf(`REMARK LIKE "%%%s%%"`, include))
+				includeFilter = append(includeFilter, fmt.Sprintf(`REMARK LIKE '%%%s%%'`, include))
 			}
 
 			filter = append(filter, fmt.Sprintf("(%s)", strings.Join(includeFilter[:], " OR ")))
@@ -59,7 +59,7 @@ func BuildFilter(c *gin.Context) string {
 			excludes := strings.Split(value[0], ",")
 
 			for _, exclude := range excludes {
-				excludeFilter = append(excludeFilter, fmt.Sprintf(`REMARK NOT LIKE "%%%s%%"`, exclude))
+				excludeFilter = append(excludeFilter, fmt.Sprintf(`REMARK NOT LIKE '%%%s%%'`, exclude))
 			}
 
 			filter = append(filter, fmt.Sprintf("(%s)", strings.Join(excludeFilter[:], " AND ")))
@@ -68,7 +68,7 @@ func BuildFilter(c *gin.Context) string {
 			ccs := strings.Split(value[0], ",")
 
 			for _, cc := range ccs {
-				ccFilter = append(ccFilter, fmt.Sprintf(`COUNTRY_CODE="%s"`, cc))
+				ccFilter = append(ccFilter, fmt.Sprintf(`COUNTRY_CODE='%s'`, cc))
 			}
 
 			filter = append(filter, fmt.Sprintf("(%s)", strings.Join(ccFilter[:], " OR ")))
@@ -77,7 +77,7 @@ func BuildFilter(c *gin.Context) string {
 			modes := strings.Split(value[0], ",")
 
 			for _, mode := range modes {
-				modeFilter = append(modeFilter, fmt.Sprintf(`CONN_MODE LIKE "%%%s%%"`, mode))
+				modeFilter = append(modeFilter, fmt.Sprintf(`CONN_MODE LIKE '%%%s%%'`, mode))
 			}
 
 			filter = append(filter, fmt.Sprintf("(%s)", strings.Join(modeFilter[:], " OR ")))
@@ -89,7 +89,7 @@ func BuildFilter(c *gin.Context) string {
 			transports := strings.Split(value[0], ",")
 
 			for _, transport := range transports {
-				transportFilter = append(transportFilter, fmt.Sprintf(`TRANSPORT LIKE "%%%s%%"`, transport))
+				transportFilter = append(transportFilter, fmt.Sprintf(`TRANSPORT LIKE '%%%s%%'`, transport))
 			}
 
 			filter = append(filter, fmt.Sprintf("(%s)", strings.Join(transportFilter[:], " OR ")))
@@ -98,7 +98,7 @@ func BuildFilter(c *gin.Context) string {
 			values := strings.Split(value[0], ",")
 
 			for _, value := range values {
-				valueFilter = append(valueFilter, fmt.Sprintf(`%s="%s"`, strings.ToUpper(key), value))
+				valueFilter = append(valueFilter, fmt.Sprintf(`%s='%s'`, strings.ToUpper(key), value))
 			}
 
 			filter = append(filter, fmt.Sprintf("(%s)", strings.Join(valueFilter[:], " OR ")))
@@ -123,7 +123,7 @@ func BuildFilter(c *gin.Context) string {
 		result = result + " LIMIT 10"
 	}
 
-	return result
+	return strings.ReplaceAll(result, `"`, "'")
 }
 
 func LogFuncToFile(f func(), filename string) {

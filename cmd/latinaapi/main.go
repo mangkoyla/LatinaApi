@@ -14,7 +14,6 @@ import (
 	"github.com/LalatinaHub/LatinaApi/common/helper"
 	latinabot "github.com/LalatinaHub/LatinaBot"
 	latinasub "github.com/LalatinaHub/LatinaSub-go"
-	"github.com/LalatinaHub/LatinaSub-go/db"
 	"github.com/go-co-op/gocron"
 )
 
@@ -64,7 +63,6 @@ func cronJob() {
 	}
 
 	schedule.StartAsync()
-	schedule.RunByTag("scrape")
 }
 
 func checkDir() {
@@ -77,7 +75,6 @@ func checkDir() {
 func main() {
 	// Check directory
 	checkDir()
-	db.Init()
 
 	// Set cron job
 	cronJob()
