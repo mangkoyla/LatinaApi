@@ -24,7 +24,8 @@ var (
 )
 
 func cronJob() {
-	schedule := gocron.NewScheduler(time.Now().Location())
+	loc, _ := time.LoadLocation("Asia/Jakarta")
+	schedule := gocron.NewScheduler(loc)
 	// schedule.SetMaxConcurrentJobs(1, gocron.RescheduleMode)
 
 	schedule.Cron("30 * * * *").Tag("filter").Do(func() {
