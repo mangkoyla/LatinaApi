@@ -50,7 +50,7 @@ func BuildFilter(c *gin.Context) string {
 			includes := strings.Split(value[0], ",")
 
 			for _, include := range includes {
-				includeFilter = append(includeFilter, fmt.Sprintf(`REMARK LIKE '%%%s%%'`, include))
+				includeFilter = append(includeFilter, fmt.Sprintf(`REMARK ILIKE '%%%s%%'`, include))
 			}
 
 			filter = append(filter, fmt.Sprintf("(%s)", strings.Join(includeFilter[:], " OR ")))
@@ -59,7 +59,7 @@ func BuildFilter(c *gin.Context) string {
 			excludes := strings.Split(value[0], ",")
 
 			for _, exclude := range excludes {
-				excludeFilter = append(excludeFilter, fmt.Sprintf(`REMARK NOT LIKE '%%%s%%'`, exclude))
+				excludeFilter = append(excludeFilter, fmt.Sprintf(`REMARK NOT ILIKE '%%%s%%'`, exclude))
 			}
 
 			filter = append(filter, fmt.Sprintf("(%s)", strings.Join(excludeFilter[:], " AND ")))
