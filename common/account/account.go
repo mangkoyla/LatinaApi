@@ -1,7 +1,7 @@
 package account
 
 import (
-	"github.com/LalatinaHub/LatinaSub-go/db"
+	"github.com/mangkoyla/LatinaSub-go/db"
 )
 
 func Get(filter string) []db.DBScheme {
