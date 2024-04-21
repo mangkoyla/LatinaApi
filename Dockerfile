@@ -2,8 +2,7 @@ FROM node:lts as web_builder
 
 WORKDIR /usr/src/web
 
-RUN git clone https://github.com/mangkoyla/LatinaDocs .
-RUN npm init
+RUN git clone https://github.com/mangkoyla/LatinaDocs 
 RUN npm install
 RUN npm run build
 
