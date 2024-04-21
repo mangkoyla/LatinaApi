@@ -3,7 +3,7 @@ package account
 import (
 	"math/rand"
 
-	"github.com/LalatinaHub/LatinaSub-go/db"
+	"github.com/mangkoyla/LatinaSub-go/db"
 )
 
 func PopulateBugs(accounts []db.DBScheme, cdn, sni []string) []db.DBScheme {
