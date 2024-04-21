@@ -8,12 +8,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/LalatinaHub/LatinaApi/api/router"
-	"github.com/LalatinaHub/LatinaApi/common/account"
-	"github.com/LalatinaHub/LatinaApi/common/account/converter"
-	"github.com/LalatinaHub/LatinaApi/common/helper"
-	latinabot "github.com/LalatinaHub/LatinaBot"
-	latinasub "github.com/LalatinaHub/LatinaSub-go"
+	"github.com/mangkoyla/LatinaApi/api/router"
+	"github.com/mangkoyla/LatinaApi/common/account"
+	"github.com/mangkoyla/LatinaApi/common/account/converter"
+	"github.com/mangkoyla/LatinaApi/common/helper"
+	latinabot "github.com/mangkoyla/LatinaBot"
+	latinasub "github.com/mangkoyla/LatinaSub-go"
 	"github.com/go-co-op/gocron"
 )
 
