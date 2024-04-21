@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"strings"
 
-	apiHelper "github.com/LalatinaHub/LatinaApi/api/helper"
-	"github.com/LalatinaHub/LatinaApi/common/account"
-	"github.com/LalatinaHub/LatinaApi/common/account/converter"
-	"github.com/LalatinaHub/LatinaApi/common/helper"
+	apiHelper "github.com/mangkoyla/LatinaApi/api/helper"
+	"github.com/mangkoyla/LatinaApi/common/account"
+	"github.com/mangkoyla/LatinaApi/common/account/converter"
+	"github.com/mangkoyla/LatinaApi/common/helper"
 	"github.com/gin-gonic/gin"
 )
 
