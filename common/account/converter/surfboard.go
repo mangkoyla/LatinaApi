@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/LalatinaHub/LatinaSub-go/db"
+	"github.com/mangkoyla/LatinaSub-go/db"
 	C "github.com/sagernet/sing-box/constant"
 )
 
