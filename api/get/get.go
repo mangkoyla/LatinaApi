@@ -1,4 +1,4 @@
-package getRoute
+package main
 
 import (
 	"net/http"
@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetHandler(c *gin.Context) {
+func Handler(c *gin.Context) {
 	format := c.Query("format")
 	cdn := strings.Split(c.DefaultQuery("cdn", ""), ",")
 	sni := strings.Split(c.DefaultQuery("sni", ""), ",")
@@ -26,11 +26,11 @@ func GetHandler(c *gin.Context) {
 
 	switch format {
 	case "clash":
-		c.String(http.StatusOK, converter.ToClash(proxies))
+		c.Data(http.StatusOK, "text/plain", []byte(converter.ToClash(proxies)))
 	case "surfboard":
-		c.String(http.StatusOK, strings.Replace(converter.ToSurfboard(proxies), "URL_PLACEHOLDER", apiHelper.GetRequestedURL(c), 1))
+		c.Data(http.StatusOK, "text/plain", []byte(strings.Replace(converter.ToSurfboard(proxies), "URL_PLACEHOLDER", apiHelper.GetRequestedURL(c), 1)))
 	case "raw":
-		c.String(http.StatusOK, converter.ToRaw(proxies))
+		c.Data(http.StatusOK, "text/plain", []byte(converter.ToRaw(proxies)))
 	default:
 		c.JSON(http.StatusOK, proxies)
 	}
