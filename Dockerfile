@@ -1,11 +1,5 @@
 FROM node:lts as web_builder
 
-WORKDIR /usr/src/web
-
-RUN git clone https://github.com/mangkoyla/LatinaDocs 
-RUN npm install
-RUN npm run build
-
 FROM golang:latest as web_app
 
 WORKDIR /usr/src/app
