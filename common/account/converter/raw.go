@@ -8,9 +8,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/LalatinaHub/LatinaApi/common/account/protocol"
-	"github.com/LalatinaHub/LatinaApi/common/helper"
-	"github.com/LalatinaHub/LatinaSub-go/db"
+	"github.com/mangkoyla/LatinaApi/common/account/protocol"
+	"github.com/mangkoyla/LatinaApi/common/helper"
+	"github.com/mangkoyla/LatinaSub-go/db"
 	C "github.com/sagernet/sing-box/constant"
 )
 
